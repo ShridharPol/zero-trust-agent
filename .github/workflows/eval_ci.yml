@@ -1,0 +1,41 @@
+# Zero-Trust Agent CI: runs the eval suite on every push/PR to main.
+# Fails if evaluation score drops below 80%.
+
+name: Zero-Trust Agent CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      LANGSMITH_API_KEY: ${{ secrets.LANGSMITH_API_KEY }}
+      LANGSMITH_PROJECT: zero-trust-agent
+      LANGSMITH_TRACING_V2: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run evaluation suite
+        run: python evals/run_evals.py
+
+      - name: Upload outputs as artifact
+        uses: actions/upload-artifact@v4
+        if: hashFiles('outputs/**') != ''
+        with:
+          name: eval-outputs
+          path: outputs/

@@ -1,0 +1,6 @@
+google-genai
+langsmith
+python-dotenv
+numpy
+scipy
+matplotlib
