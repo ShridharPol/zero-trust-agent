@@ -1,4 +1,5 @@
 # Zero-Trust AI Agent
+![CI](https://github.com/ShridharPol/retail-demand-forecasting/actions/workflows/ci.yml/badge.svg)
 
 A zero-trust pipeline for power grid PMU (Phasor Measurement Unit) anomaly detection using DSP features and LLM-based trust scoring.
 
